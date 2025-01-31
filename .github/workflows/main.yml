@@ -10,29 +10,41 @@ on:
         
   workflow_dispatch: 
 
+env:
+  GLOBAL_VAR: "This is global variable"  
+
 jobs:
     build-app:
+        env:
+          JOB_VAR: "This is job variable"
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
             - name: Run a one-line script
-              run: echo Hello, world!
+              run: | 
+                echo Hello, world!
+                echo $GLOBAL_VAR
+                echo $JOB_VAR
+                echo $STEP_VAR
+              env:
+               STEP_VAR: "This is step variable"
 
             - name: Run a multi-line script
               run: |
                 echo Add other actions to build,
                 echo test, and deploy your project.
+                echo $STEP_VAR
 
     build-api:
         runs-on: windows-latest
         steps:
-          - run: echo Building API
+          - run: echo Building API ${{env.GLOBAL_VAR}}
 
     build-db:
         needs: build-app
         runs-on: windows-latest
         steps:
-          - run: echo Hello Windows
+          - run: echo Hello Windows ${{env.GLOBAL_VAR}}
 
 
     packages: 
