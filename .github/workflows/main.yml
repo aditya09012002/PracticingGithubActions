@@ -34,6 +34,32 @@ jobs:
                 echo Add other actions to build,
                 echo test, and deploy your project.
                 echo $STEP_VAR
+            
+            - name: Print Default Variables
+              run: |
+                echo "Runner OS: $RUNNER_OS"
+                echo "Repository: $GITHUB_REPOSITORY"
+                echo "Run Number: $GITHUB_RUN_NUMBER"
+
+            - name: Checking artifacts
+              run: echo Hello World from artifacts > "testing_artifacts.txt"
+
+            - name : Upload artifacts
+              uses : actions/upload-artifact@v4
+              with:
+                name: testing-artifact
+                path: testing_artifacts.txt
+                retention-days: 30
+            
+            - name: Download artifacts
+              uses: actions/download-artifact@v4
+              with:
+                name: testing-artifact
+                path: ./downloaded
+            
+            - name: Display artifact content
+              run: cat ./downloaded/testing_artifacts.txt
+
 
     build-api:
         runs-on: windows-latest
