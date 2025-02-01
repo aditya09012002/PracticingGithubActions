@@ -17,7 +17,7 @@ jobs:
     build-app:
         env:
           JOB_VAR: "This is job variable"
-        runs-on: ubuntu-latest
+        runs-on: ['self-hosted', 'Linux']
         steps:
             - uses: actions/checkout@v3
             - name: Run a one-line script
